@@ -86,9 +86,9 @@ with emoji/icon, title, blurb, link:
 3. **Weekly Football** — `Term-time soccer schools and player development centres where young Royals build skills, confidence and a love of the game.`
 4. **Community & Inclusion** — `Walking football, pan-disability sessions and health & wellbeing programmes — because the club belongs to everyone in Reading.`
 
-**Stats strip** (navy background, gold numbers — replace with real figures):
-`10,000+ children coached each year` · `60+ partner schools & nurseries` ·
-`12 camp venues across Berkshire` · `150+ weeks of camps delivered`
+**Stats strip** (navy background, gold numbers):
+`1,000s — children coached every week` · `50 — schools we work in` ·
+`Every holiday — camps across Berkshire` · `100% — DBS-checked coaches`
 
 **"Safe hands, big smiles"** (two columns: checklist + photo):
 - DBS-checked, first-aid trained, safeguarding-qualified coaches
