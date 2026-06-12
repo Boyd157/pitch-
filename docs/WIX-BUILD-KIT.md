@@ -111,9 +111,13 @@ Kellogg's Football Camps (partnership camps at venues like South Reading
 Leisure Centre and Stanlake Meadows, Twyford) · Girls-Only Soccer School ·
 Goalkeeper Camps. Copy in the prototype's `holiday-camps.html`.
 
-**Pricing table** (Wix table or repeater — placeholder prices, live prices
-shown on ClassForKids): standard day 9:00–3:30 £28 · extended day 8:30–5:00
-£34 · full week £125 (save 10%) · HAF 20% off paid bookings.
+**Camps & venues table** (Wix table or repeater): list the current camp
+line-up — Dome Mixed Football Camps (Years 1–6 and 7–9) and the Girls-Only
+Camp at the Community Trust Training Complex, plus Kellogg's Football Camps
+at South Reading Leisure Centre, Stanlake Meadows (Twyford) and Cantley Park
+(Wokingham) — each row with a Book link. **Don't hard-code dates, times or
+prices on the Wix site**: they change every holiday and live on ClassForKids;
+keeping them off the site avoids them going stale.
 
 **"A typical camp day"** timeline (9:00 arrival → 3:15 awards) — see prototype.
 
