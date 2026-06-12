@@ -16,14 +16,15 @@ ready to paste.
 
 1. Create a new site in the Wix editor (a blank template gives the cleanest
    start; otherwise pick any "Sports & Fitness" template and strip it back).
-2. You'll need a **Business/Commerce plan** (Core or above) for Wix Bookings
-   with online payments.
+2. **Booking is handled by the Trust's existing ClassForKids portal**
+   (`https://reading-fc-community-trust.classforkids.io/`), so the Wix site is
+   front-of-house only: every "Book Now" button is a plain link that opens
+   ClassForKids in a new tab. No Wix Bookings, no on-site payments — a basic
+   **Light plan** is enough (upgrade only if you later sell merch or take
+   payments on-site).
 3. Add these Wix apps from the App Market:
-   - **Wix Bookings** — camps and weekly sessions
    - **Wix Forms** — contact / school enquiry forms
    - **Wix FAQ** (or use collapsible text elements) — Parents Hub FAQs
-4. Connect payments: Settings → Accept Payments → Wix Payments (cards) and
-   enable offline payment as a fallback for HAF/voucher bookings.
 
 ## 2. Design tokens (Site Design → Theme)
 
@@ -105,25 +106,22 @@ with emoji/icon, title, blurb, link:
 
 Page hero: H1 `Holiday Camps`, sub: `Every school holiday, our camps turn pitches and sports halls across Berkshire into a week your child won't stop talking about. Ages 4–13, all abilities welcome.`
 
-**Camp cards (4):** Multi-Sport Camp (5–13) · Football Camp (5–13) ·
-Mini Royals shorter 4-hour days (4–5, Ofsted-aligned) · Girls-Only Football
-(led by female coaches). Copy in the prototype's `holiday-camps.html`.
+**Camp cards (4):** Football Camps (5–14, grouped by school year) ·
+Kellogg's Football Camps (partnership camps at venues like South Reading
+Leisure Centre and Stanlake Meadows, Twyford) · Girls-Only Soccer School ·
+Goalkeeper Camps. Copy in the prototype's `holiday-camps.html`.
 
-**Pricing table** (Wix table or repeater — placeholder prices):
-standard day 9:00–3:30 £28 · extended day 8:30–5:00 £34 · Mini Royals
-9:00–1:00 £19 · full week £125 (save 10%) · HAF 20% off paid bookings.
+**Pricing table** (Wix table or repeater — placeholder prices, live prices
+shown on ClassForKids): standard day 9:00–3:30 £28 · extended day 8:30–5:00
+£34 · full week £125 (save 10%) · HAF 20% off paid bookings.
 
 **"A typical camp day"** timeline (9:00 arrival → 3:15 awards) — see prototype.
 
-**Wix Bookings setup for camps:**
-- Create a **Service per camp type** (Multi-Sport, Football, Mini Royals,
-  Girls-Only), type = *Class* with daily sessions, or *Course* for
-  book-the-week.
-- Use **Staff = lead coach**, **Locations = venues** (Tilehurst, Woodley,
-  Caversham, Earley…), set capacity per session.
-- Booking form custom fields: child's name & DOB, school, medical/allergy
-  info, emergency contact, photo consent, HAF code.
-- Coupons: `HAF20` (20%), sibling discount via pricing plans or manual coupon.
+**Booking links:** every "Check dates" / "Book a Camp" button links to
+`https://reading-fc-community-trust.classforkids.io/camps` (set "open in new
+tab" in Wix link settings). Venue pages also exist on ClassForKids (e.g.
+South Reading Leisure Centre, Community Trust Training Complex) if you want
+deep links per venue.
 
 ### 4.3 Schools & Nurseries
 
@@ -142,15 +140,14 @@ Two school/nursery testimonials. CTA: `Let's plan your term` → `Enquire Now`.
 
 Page hero sub: `Term-time sessions where young Royals fall in love with the game — from first touches at four to development squads at fourteen.`
 
-Cards: Little Kickers (4–6) · Soccer School (6–11) · Development Centre
-(8–14, trial-based) · Girls' Football (5–12).
+Cards: Little Kickers (4–6) · Soccer School (6–11) · Development Centres
+(8–14, trial-based, pathway towards academy football) · Girls' Football (5–12).
 
-**Timetable table** (placeholder days/venues/prices — see prototype).
-Offer: *first session free* — drive to a "Book a Free Taster" Wix Bookings
-service (price £0).
+**Timetable table** (placeholder days/venues/prices — see prototype; the
+live weekly schedule lives on ClassForKids).
 
-**Wix Bookings:** each weekly session = a *Class* with weekly recurrence;
-monthly Development Centre fee = a *Pricing Plan* (membership).
+**Booking links:** "See the Schedule" buttons link to
+`https://reading-fc-community-trust.classforkids.io/` in a new tab.
 
 ### 4.5 Community & Inclusion
 
@@ -186,15 +183,17 @@ swap in real photos/bios) + recruitment CTA.
   taster / school coaching / community / party / HAF / careers / other),
   message. Route notifications to the office inbox; set auto-reply
   "we respond within one working day".
-- **Right:** embed the **Wix Bookings calendar/service list** widget plus an
-  office-details card.
+- **Right:** a "Book online" card with a button linking to the ClassForKids
+  portal, plus an office-details card. (ClassForKids doesn't embed cleanly
+  in an iframe — a prominent link-out button is the standard pattern.)
 
 ## 5. Settings & polish checklist
 
 - [ ] Mobile editor pass on every page (Wix doesn't fully auto-adapt)
 - [ ] SEO: page titles/descriptions (copy the `<title>`/meta from prototype files)
 - [ ] Favicon: simple blue/white hooped roundel (no official crest)
-- [ ] Automations: booking confirmation + reminder emails (Wix Automations)
+- [ ] Check every Book Now / Check dates button opens ClassForKids in a new tab
+      (confirmation and reminder emails are handled by ClassForKids itself)
 - [ ] GDPR: cookie banner (Wix Consent Banner), privacy policy page, photo-consent wording on booking forms
 - [ ] Replace ALL placeholder prices, venues, contact details, stats and testimonials
 - [ ] Keep concept disclaimer until Reading FC authorises the branding

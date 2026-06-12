@@ -15,7 +15,11 @@ contact details are placeholders.
 |---|---|
 | `index.html` + 6 other `.html` pages | Working static prototype — open `index.html` in any browser |
 | `assets/css/styles.css`, `assets/js/main.js` | Shared styling (Reading-inspired blue/white hoops) and nav script |
-| `docs/WIX-BUILD-KIT.md` | Page-by-page guide to rebuilding the site in the Wix editor: design tokens, paste-ready copy, Wix Bookings/Forms/FAQ setup, launch checklist |
+| `docs/WIX-BUILD-KIT.md` | Page-by-page guide to rebuilding the site in the Wix editor: design tokens, paste-ready copy, Wix Forms/FAQ setup, launch checklist |
+
+Booking links out to the Trust's existing
+[ClassForKids portal](https://reading-fc-community-trust.classforkids.io/),
+so no Wix Bookings app or Business plan is required.
 
 ## Pages
 
