@@ -14,6 +14,8 @@ contact details are placeholders.
 | Path | What it is |
 |---|---|
 | `index.html` + 6 other `.html` pages | Working static prototype — open `index.html` in any browser |
+| `family-app.html` | Pitch page for the **Royals Family Pass** — a free Trust app giving families free tickets & offers across the Thames Valley |
+| `app.html` | Fully interactive mobile prototype of the app: offer search, limited QR ticket claiming ("first 100 families"), ticket wallet, simulated push notifications and venue redemption |
 | `assets/css/styles.css`, `assets/js/main.js` | Shared styling (Reading-inspired blue/white hoops) and nav script |
 | `docs/WIX-BUILD-KIT.md` | Page-by-page guide to rebuilding the site in the Wix editor: design tokens, paste-ready copy, Wix Forms/FAQ setup, launch checklist |
 
@@ -24,7 +26,8 @@ so no Wix Bookings app or Business plan is required.
 ## Pages
 
 Home · Holiday Camps · Schools & Nurseries · Weekly Football ·
-Community & Inclusion · Parents Hub (with FAQs) · About · Contact & Booking
+Community & Inclusion · Parents Hub (with FAQs) · Family App (pitch + live
+app prototype) · About · Contact & Booking
 
 ## Viewing the prototype
 
