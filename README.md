@@ -15,7 +15,8 @@ contact details are placeholders.
 |---|---|
 | `index.html` + 6 other `.html` pages | Working static prototype — open `index.html` in any browser |
 | `family-app.html` | Pitch page for the **Royals Family Pass** — a free Trust app giving families free tickets & offers across the Thames Valley |
-| `app.html` | Fully interactive mobile prototype of the app: offer search, limited QR ticket claiming ("first 100 families"), ticket wallet, simulated push notifications and venue redemption |
+| `app.html` | Fully interactive mobile prototype of the app: offer search, limited ticket claiming ("first 100 families"), QR + quotable-code wallet, share-by-WhatsApp/text, simulated push notifications and venue redemption |
+| `admin.html` | Trust management dashboard demo: publish/edit/pause offers, set allocations, live claim counters and one-click push alerts (syncs with `app.html` on the same device) |
 | `assets/css/styles.css`, `assets/js/main.js` | Shared styling (Reading-inspired blue/white hoops) and nav script |
 | `docs/WIX-BUILD-KIT.md` | Page-by-page guide to rebuilding the site in the Wix editor: design tokens, paste-ready copy, Wix Forms/FAQ setup, launch checklist |
 

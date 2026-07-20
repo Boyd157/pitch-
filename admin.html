@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trust Dashboard — Royals Family Pass | Reading FC Community Trust (Concept)</title>
+  <meta name="description" content="Concept management dashboard for the Royals Family Pass: publish offers, set ticket allocations, pause offers and send push alerts to families." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --royal: #003890;
+      --navy: #001e50;
+      --sky: #e8f0fe;
+      --gold: #ffc20e;
+      --white: #ffffff;
+      --ink: #1a2233;
+      --grey: #5a6478;
+      --line: #d9e0ee;
+      --green: #0c8a4d;
+      --green-bg: #e2f5ea;
+      --red: #c0273c;
+      --red-bg: #fdecec;
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0, 30, 80, 0.12);
+      --font-head: "Oswald", "Arial Narrow", sans-serif;
+      --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); color: var(--ink); background: #f4f7fd; line-height: 1.5; }
+    button { font-family: inherit; cursor: pointer; }
+    h1, h2, h3 { font-family: var(--font-head); text-transform: uppercase; color: var(--navy); letter-spacing: 0.02em; }
+
+    .concept-ribbon {
+      background: var(--navy); color: var(--white); text-align: center; font-size: 0.78rem;
+      letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 12px;
+    }
+    .concept-ribbon strong { color: var(--gold); }
+
+    .topbar {
+      background: var(--white); border-bottom: 4px solid var(--royal);
+      box-shadow: 0 2px 12px rgba(0, 30, 80, 0.08); position: sticky; top: 0; z-index: 20;
+    }
+    .topbar-in {
+      width: min(1240px, 94%); margin: 0 auto; display: flex; align-items: center;
+      justify-content: space-between; gap: 16px; padding: 12px 0; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .crest {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: repeating-linear-gradient(180deg, var(--royal) 0 20%, var(--white) 20% 40%);
+      border: 3px solid var(--navy); flex-shrink: 0;
+    }
+    .brand-name { font-family: var(--font-head); text-transform: uppercase; color: var(--navy); font-size: 1.1rem; line-height: 1.1; }
+    .brand-name span { display: block; color: var(--royal); font-size: 0.72rem; letter-spacing: 0.18em; }
+    .topbar .links { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px;
+      font-weight: 800; font-size: 0.88rem; padding: 10px 20px; text-decoration: none;
+      transition: transform 0.12s ease;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-gold { background: var(--gold); color: var(--navy); }
+    .btn-royal { background: var(--royal); color: var(--white); }
+    .btn-ghost { background: var(--sky); color: var(--royal); }
+    .btn-sm { padding: 7px 14px; font-size: 0.78rem; }
+
+    .wrap { width: min(1240px, 94%); margin: 0 auto; padding: 28px 0 64px; }
+    .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+    .page-head p { color: var(--grey); font-size: 0.9rem; max-width: 46em; margin-top: 6px; }
+
+    /* ---- KPI tiles ---- */
+    .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 26px; }
+    .kpi {
+      background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 18px 20px; box-shadow: 0 6px 18px rgba(0,30,80,0.06);
+    }
+    .kpi .label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--grey); }
+    .kpi .num { font-family: var(--font-head); font-size: 2.3rem; color: var(--navy); line-height: 1.15; margin-top: 4px; }
+    .kpi .sub { font-size: 0.74rem; color: var(--grey); margin-top: 2px; }
+
+    /* ---- Offers table ---- */
+    .panel {
+      background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: 0 6px 18px rgba(0,30,80,0.06); overflow: hidden;
+    }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .panel-head h2 { font-size: 1.05rem; }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    th {
+      text-align: left; font-family: var(--font-head); text-transform: uppercase; font-weight: 600;
+      letter-spacing: 0.06em; font-size: 0.76rem; color: var(--grey);
+      padding: 12px 16px; border-bottom: 1px solid var(--line); background: #fafcff;
+    }
+    td { padding: 14px 16px; border-bottom: 1px solid var(--line); font-size: 0.88rem; vertical-align: middle; }
+    tr:last-child td { border-bottom: 0; }
+    tr.paused td { opacity: 0.55; }
+    .offer-cell { display: flex; align-items: center; gap: 12px; min-width: 260px; }
+    .offer-ico {
+      width: 40px; height: 40px; border-radius: 10px; background: var(--sky);
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+    }
+    .offer-cell .t { font-weight: 800; color: var(--navy); line-height: 1.25; }
+    .offer-cell .v { font-size: 0.76rem; color: var(--grey); }
+    .tag { display: inline-block; background: var(--sky); color: var(--royal); border-radius: 999px; font-size: 0.7rem; font-weight: 800; padding: 3px 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tag-gold { background: var(--gold); color: var(--navy); }
+
+    .meter-cell { min-width: 190px; }
+    .meter { background: var(--sky); border-radius: 999px; height: 8px; overflow: hidden; margin-top: 6px; }
+    .meter i { display: block; height: 100%; background: var(--royal); border-radius: 999px; }
+    .meter-num { font-size: 0.8rem; font-weight: 700; color: var(--ink); }
+    .meter-num small { color: var(--grey); font-weight: 600; }
+
+    .status { display: inline-flex; align-items: center; gap: 6px; font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 999px; padding: 4px 12px; }
+    .status-live { background: var(--green-bg); color: var(--green); }
+    .status-paused { background: #e6e9f0; color: var(--grey); }
+    .status-out { background: var(--red-bg); color: var(--red); }
+
+    .row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .note { font-size: 0.78rem; color: var(--grey); margin-top: 14px; }
+    .note a { color: var(--royal); font-weight: 700; }
+
+    /* ---- Modal ---- */
+    .veil { position: fixed; inset: 0; background: rgba(6,14,36,0.55); z-index: 40; display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 16px; }
+    .veil.on { display: flex; }
+    .modal { background: var(--white); border-radius: 18px; width: min(620px, 100%); padding: 26px 28px; box-shadow: 0 30px 80px rgba(0,0,0,0.35); }
+    .modal h2 { font-size: 1.2rem; margin-bottom: 4px; }
+    .modal .hint { font-size: 0.8rem; color: var(--grey); margin-bottom: 18px; }
+    .fgrid { display: grid; grid-template-columns: 88px 1fr 1fr; gap: 14px; }
+    .fgrid .full { grid-column: 1 / -1; }
+    .fgrid .two { grid-column: span 2; }
+    label { display: block; font-weight: 700; font-size: 0.76rem; color: var(--navy); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.05em; }
+    input, select, textarea {
+      width: 100%; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 9px;
+      font-family: inherit; font-size: 0.9rem; background: var(--white); color: var(--ink);
+    }
+    textarea { min-height: 76px; resize: vertical; }
+    .check { display: flex; align-items: center; gap: 10px; font-size: 0.86rem; color: var(--ink); font-weight: 600; }
+    .check input { width: 18px; height: 18px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+    .toast {
+      position: fixed; bottom: 26px; left: 50%; transform: translate(-50%, 16px); z-index: 60;
+      background: var(--navy); color: var(--white); font-size: 0.86rem; font-weight: 700;
+      border-radius: 999px; padding: 12px 22px; opacity: 0; transition: all 0.25s ease; pointer-events: none;
+    }
+    .toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 700px) { .fgrid { grid-template-columns: 1fr 1fr; } .fgrid .two { grid-column: 1 / -1; } }
+  </style>
+</head>
+<body>
+  <div class="concept-ribbon"><strong>Concept prototype</strong> — Trust-facing demo, not an official Reading FC product</div>
+
+  <header class="topbar">
+    <div class="topbar-in">
+      <a class="brand" href="family-app.html">
+        <span class="crest" aria-hidden="true"></span>
+        <span class="brand-name">Royals Family Pass<span>Trust Management Dashboard</span></span>
+      </a>
+      <div class="links">
+        <a class="btn btn-ghost btn-sm" href="family-app.html">← App pitch page</a>
+        <a class="btn btn-royal btn-sm" href="app.html" target="_blank" rel="noopener">📱 View the family app</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="page-head">
+      <div>
+        <h1>Offers &amp; allocations</h1>
+        <p>Publish offers, set how many families can claim each one, pause offers, and send a push alert to every family with the app. Changes go live in the family app immediately.</p>
+      </div>
+      <button class="btn btn-gold" id="newOfferBtn">＋ New offer</button>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>All offers</h2>
+        <span class="note" style="margin:0;">Sorted as shown in the app · claims update live</span>
+      </div>
+      <div class="table-scroll">
+        <table id="offerTable" aria-label="Offers">
+          <thead>
+            <tr>
+              <th>Offer</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Allocation</th>
+              <th>Claimed</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="offerRows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="note">
+      Concept demo: data is stored in this browser only, so the dashboard and the
+      <a href="app.html" target="_blank" rel="noopener">family app</a> stay in sync on this device.
+      In a real build this is a secure Trust login, allocations are enforced on the server, and
+      push alerts go to every installed app. "Claimed" counts for the built-in offers include
+      illustrative seed numbers. <button class="btn btn-ghost btn-sm" id="resetAdminBtn" style="vertical-align:middle;">Reset dashboard demo data</button>
+    </p>
+  </main>
+
+  <!-- New / edit offer modal -->
+  <div class="veil" id="veil">
+    <form class="modal" id="offerForm">
+      <h2 id="formTitle">New offer</h2>
+      <p class="hint">Fill in the offer as families will see it in the app. Leave the allocation blank for an unlimited offer (e.g. a season-long discount).</p>
+      <div class="fgrid">
+        <div>
+          <label for="fIcon">Icon</label>
+          <input id="fIcon" maxlength="4" placeholder="🎟️" />
+        </div>
+        <div class="two">
+          <label for="fTitle">Offer title *</label>
+          <input id="fTitle" required placeholder="e.g. Free Family Cinema Tickets" />
+        </div>
+        <div class="full">
+          <label for="fVenue">Venue / partner *</label>
+          <input id="fVenue" required placeholder="e.g. Vue Cinema, Reading" />
+        </div>
+        <div>
+          <label for="fCat">Category</label>
+          <select id="fCat">
+            <option value="daysout">Days Out</option>
+            <option value="matchday">Matchday</option>
+            <option value="discount">Discounts</option>
+            <option value="trust">Trust</option>
+          </select>
+        </div>
+        <div>
+          <label for="fPrice">Price label</label>
+          <input id="fPrice" placeholder="FREE" value="FREE" />
+        </div>
+        <div>
+          <label for="fCap">Allocation</label>
+          <input id="fCap" type="number" min="1" step="1" placeholder="e.g. 100" />
+        </div>
+        <div class="full">
+          <label for="fDesc">Description shown to families</label>
+          <textarea id="fDesc" placeholder="What is the offer, who is it for, and how do families use it?"></textarea>
+        </div>
+        <div class="full">
+          <label for="fTerms">Terms (the small print)</label>
+          <input id="fTerms" placeholder="e.g. One per family. Off-peak sessions only." />
+        </div>
+        <div class="full check">
+          <input type="checkbox" id="fPush" checked />
+          <label for="fPush" style="margin:0;text-transform:none;letter-spacing:0;font-size:0.86rem;">Send a push notification to all families when this is published</label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn btn-gold" id="saveBtn">Publish offer</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="assets/js/offers-data.js"></script>
+  <script>
+  (() => {
+    "use strict";
+    const $ = (id) => document.getElementById(id);
+    const APP_KEY = "rfp_demo_v1";
+    const CATS = { matchday: "Matchday", daysout: "Days Out", discount: "Discounts", trust: "Trust" };
+
+    let A = window.rfpLoadAdmin();
+    const saveA = () => { window.rfpSaveAdmin(A); render(); };
+
+    // Family-app claim counts on this device (seed numbers until the app runs)
+    function appCounts() {
+      try { return (JSON.parse(localStorage.getItem(APP_KEY) || "{}").counts) || {}; }
+      catch { return {}; }
+    }
+    function catalogue() {
+      return window.RFP_OFFERS
+        .map((o) => Object.assign({ builtin: true }, o, A.overrides[o.id] || {}))
+        .concat(A.customOffers.map((o) => Object.assign({ builtin: false }, o)));
+    }
+    const claimedOf = (o, counts) => o.cap ? (counts[o.id] != null ? counts[o.id] : (o.seedClaimed || 0)) : null;
+
+    function toast(msg) {
+      const t = $("toast");
+      t.textContent = msg; t.classList.add("on");
+      clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("on"), 2800);
+    }
+
+    /* ---------------- KPI tiles ---------------- */
+    function renderKpis(list, counts) {
+      const live = list.filter((o) => !o.paused);
+      const capped = list.filter((o) => o.cap);
+      const claimed = capped.reduce((n, o) => n + claimedOf(o, counts), 0);
+      const capTotal = capped.reduce((n, o) => n + o.cap, 0);
+      const pct = capTotal ? Math.round((claimed / capTotal) * 100) : 0;
+      const soldOut = capped.filter((o) => claimedOf(o, counts) >= o.cap).length;
+      $("kpis").innerHTML = `
+        <div class="kpi"><div class="label">Live offers</div><div class="num">${live.length}</div><div class="sub">${list.length - live.length} paused</div></div>
+        <div class="kpi"><div class="label">Tickets claimed</div><div class="num">${claimed.toLocaleString("en-GB")}</div><div class="sub">across ${capped.length} limited offers</div></div>
+        <div class="kpi"><div class="label">Allocation used</div><div class="num">${pct}%</div><div class="sub">${claimed.toLocaleString("en-GB")} of ${capTotal.toLocaleString("en-GB")} tickets</div></div>
+        <div class="kpi"><div class="label">Fully claimed</div><div class="num">${soldOut}</div><div class="sub">offers at their limit</div></div>`;
+    }
+
+    /* ---------------- Offers table ---------------- */
+    function render() {
+      A = window.rfpLoadAdmin();
+      const counts = appCounts();
+      const list = catalogue();
+      renderKpis(list, counts);
+
+      $("offerRows").innerHTML = list.map((o) => {
+        const claimed = claimedOf(o, counts);
+        const left = o.cap ? Math.max(0, o.cap - claimed) : null;
+        const pct = o.cap ? Math.min(100, Math.round((claimed / o.cap) * 100)) : 0;
+        const out = o.cap && left <= 0;
+        const status = o.paused
+          ? '<span class="status status-paused">⏸ Paused</span>'
+          : out
+            ? '<span class="status status-out">● Fully claimed</span>'
+            : '<span class="status status-live">● Live</span>';
+        return `
+          <tr class="${o.paused ? "paused" : ""}">
+            <td><div class="offer-cell"><span class="offer-ico">${o.icon || "🎟️"}</span><div><div class="t">${o.title}</div><div class="v">${o.venue}</div></div></div></td>
+            <td><span class="tag">${CATS[o.cat] || o.cat || "—"}</span></td>
+            <td><span class="tag tag-gold">${o.price || "FREE"}</span></td>
+            <td>${o.cap ? `First ${o.cap.toLocaleString("en-GB")}` : "Unlimited"}</td>
+            <td class="meter-cell">${o.cap
+              ? `<div class="meter-num">${claimed.toLocaleString("en-GB")} <small>of ${o.cap.toLocaleString("en-GB")} · ${left.toLocaleString("en-GB")} left</small></div><div class="meter"><i style="width:${pct}%"></i></div>`
+              : `<span class="meter-num"><small>Not limited</small></span>`}</td>
+            <td>${status}</td>
+            <td><div class="row-actions">
+              <button class="btn btn-ghost btn-sm" data-edit="${o.id}">Edit</button>
+              <button class="btn btn-ghost btn-sm" data-pause="${o.id}">${o.paused ? "Resume" : "Pause"}</button>
+              <button class="btn btn-royal btn-sm" data-push="${o.id}" ${o.paused ? "disabled" : ""}>Push alert</button>
+              ${o.builtin ? "" : `<button class="btn btn-ghost btn-sm" data-del="${o.id}" style="color:var(--red);">Delete</button>`}
+            </div></td>
+          </tr>`;
+      }).join("");
+
+      $("offerRows").querySelectorAll("[data-edit]").forEach((b) => b.addEventListener("click", () => openForm(b.dataset.edit)));
+      $("offerRows").querySelectorAll("[data-pause]").forEach((b) => b.addEventListener("click", () => togglePause(b.dataset.pause)));
+      $("offerRows").querySelectorAll("[data-push]").forEach((b) => b.addEventListener("click", () => sendPush(b.dataset.push)));
+      $("offerRows").querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => delOffer(b.dataset.del)));
+    }
+
+    function findOffer(id) { return catalogue().find((o) => o.id === id); }
+
+    function togglePause(id) {
+      const o = findOffer(id);
+      if (o.builtin) {
+        A.overrides[id] = Object.assign({}, A.overrides[id], { paused: !o.paused });
+      } else {
+        A.customOffers.find((c) => c.id === id).paused = !o.paused;
+      }
+      saveA();
+      toast(o.paused ? `▶ "${o.title}" is live again` : `⏸ "${o.title}" paused — hidden from the app`);
+    }
+
+    function sendPush(id) {
+      const o = findOffer(id);
+      A.pushQueue.push({
+        icon: o.icon || "🎟️",
+        title: o.cap ? "Don't miss out:" : "New offer:",
+        text: `${o.title} — tap to claim yours in the app.`,
+        offerId: o.id
+      });
+      saveA();
+      toast(`🔔 Push alert queued — families see it next time the app is open`);
+    }
+
+    function delOffer(id) {
+      const o = findOffer(id);
+      if (!confirm(`Delete "${o.title}"? Families will no longer see this offer.`)) return;
+      A.customOffers = A.customOffers.filter((c) => c.id !== id);
+      saveA();
+      toast("Offer deleted");
+    }
+
+    /* ---------------- New / edit form ---------------- */
+    let editingId = null;
+    function openForm(id) {
+      editingId = id || null;
+      const o = id ? findOffer(id) : null;
+      $("formTitle").textContent = o ? "Edit offer" : "New offer";
+      $("saveBtn").textContent = o ? "Save changes" : "Publish offer";
+      $("fIcon").value = o ? (o.icon || "") : "";
+      $("fTitle").value = o ? o.title : "";
+      $("fVenue").value = o ? o.venue : "";
+      $("fCat").value = o ? (o.cat || "daysout") : "daysout";
+      $("fPrice").value = o ? (o.price || "FREE") : "FREE";
+      $("fCap").value = o && o.cap ? o.cap : "";
+      $("fDesc").value = o ? (o.desc || "") : "";
+      $("fTerms").value = o ? (o.terms || "") : "";
+      $("fPush").checked = !o;
+      $("veil").classList.add("on");
+      $("fTitle").focus();
+    }
+    function closeForm() { $("veil").classList.remove("on"); editingId = null; }
+
+    $("offerForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fields = {
+        icon: $("fIcon").value.trim() || "🎟️",
+        title: $("fTitle").value.trim(),
+        venue: $("fVenue").value.trim(),
+        cat: $("fCat").value,
+        price: $("fPrice").value.trim() || "FREE",
+        cap: $("fCap").value ? Math.max(1, parseInt($("fCap").value, 10)) : null,
+        desc: $("fDesc").value.trim() || "Details to follow — see the app for updates.",
+        terms: $("fTerms").value.trim() || "Concept demo — placeholder terms."
+      };
+      if (!fields.title || !fields.venue) return;
+
+      let id = editingId;
+      if (id) {
+        const o = findOffer(id);
+        if (o.builtin) A.overrides[id] = Object.assign({}, A.overrides[id], fields);
+        else Object.assign(A.customOffers.find((c) => c.id === id), fields);
+      } else {
+        id = "cust-" + Date.now().toString(36);
+        A.customOffers.push(Object.assign({ id, seedClaimed: 0, tags: (fields.title + " " + fields.venue).toLowerCase() }, fields));
+      }
+      if ($("fPush").checked) {
+        A.pushQueue.push({
+          icon: fields.icon,
+          title: editingId ? "Offer updated:" : "New offer just dropped:",
+          text: `${fields.title}${fields.cap ? ` — first ${fields.cap} families only.` : " — tap to claim yours."}`,
+          offerId: id
+        });
+      }
+      saveA();
+      closeForm();
+      toast(editingId ? "✓ Offer updated — live in the app" : "✓ Offer published — live in the app now");
+    });
+
+    $("newOfferBtn").addEventListener("click", () => openForm(null));
+    $("cancelBtn").addEventListener("click", closeForm);
+    $("veil").addEventListener("click", (e) => { if (e.target === $("veil")) closeForm(); });
+
+    $("resetAdminBtn").addEventListener("click", () => {
+      if (!confirm("Reset the dashboard demo? This removes offers you created and restores default allocations.")) return;
+      localStorage.removeItem(window.RFP_ADMIN_KEY);
+      A = window.rfpLoadAdmin();
+      render();
+      toast("Dashboard demo data reset");
+    });
+
+    // Live-update when the family app claims tickets on this device
+    window.addEventListener("storage", (e) => {
+      if (e.key === APP_KEY || e.key === window.RFP_ADMIN_KEY) render();
+    });
+
+    render();
+  })();
+  </script>
+</body>
+</html>
