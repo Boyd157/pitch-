@@ -3,7 +3,7 @@
 // In a real build this lives on a server so allocations are enforced globally.
 window.RFP_OFFERS = [
   {
-    id: "kid-quid", icon: "🎟️", cat: "matchday",
+    id: "kid-quid", link: "https://www.readingfc.co.uk/tickets", icon: "🎟️", cat: "matchday",
     title: "3× Kid for a Quid First Team Tickets",
     venue: "Reading FC · Select Car Leasing Stadium",
     price: "KIDS £1",
@@ -13,7 +13,7 @@ window.RFP_OFFERS = [
     tags: "football match tickets first team select car leasing stadium royals quid"
   },
   {
-    id: "women", icon: "⚽", cat: "matchday",
+    id: "women", link: "https://www.readingfc.co.uk/teams/women", icon: "⚽", cat: "matchday",
     title: "Free Entry — Reading FC Women Home Matches",
     venue: "Reading FC Women · home fixtures",
     price: "FREE",
@@ -43,7 +43,7 @@ window.RFP_OFFERS = [
     tags: "junior fans forum players questions event kids"
   },
   {
-    id: "rockets", icon: "🏀", cat: "daysout",
+    id: "rockets", link: "https://www.readingrockets.co.uk/", icon: "🏀", cat: "daysout",
     title: "Free Tickets — Reading Rockets Basketball",
     venue: "Reading Rockets · Rivermead Leisure Complex",
     price: "FREE",
@@ -53,7 +53,7 @@ window.RFP_OFFERS = [
     tags: "basketball rockets rivermead sport family ticket"
   },
   {
-    id: "bowling", icon: "🎳", cat: "daysout",
+    id: "bowling", link: "https://www.bowlcentral.co.uk/", icon: "🎳", cat: "daysout",
     title: "Free Bowling for Four — Bowl Central",
     venue: "Bowl Central",
     price: "FREE",
@@ -73,7 +73,7 @@ window.RFP_OFFERS = [
     tags: "swimming swim pool leisure centre family session water"
   },
   {
-    id: "beale", icon: "🦁", cat: "daysout",
+    id: "beale", link: "https://www.bealepark.org.uk/", icon: "🦁", cat: "daysout",
     title: "Kids Go Free — Beale Wildlife Park",
     venue: "Beale Park, Lower Basildon",
     price: "KIDS FREE",
@@ -83,7 +83,7 @@ window.RFP_OFFERS = [
     tags: "beale park wildlife zoo animals day out kids free basildon pangbourne"
   },
   {
-    id: "soccer-school", icon: "⚽", cat: "discount",
+    id: "soccer-school", link: "https://reading-fc-community-trust.classforkids.io/", icon: "⚽", cat: "discount",
     title: "10% Off Trust Soccer School Courses",
     venue: "Trust venues across Berkshire",
     price: "10% OFF",
