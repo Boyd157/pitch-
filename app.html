@@ -227,6 +227,29 @@
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
     .pass-hint { font-size: 0.78rem; color: var(--grey); max-width: 26em; margin-bottom: 16px; }
 
+    /* ---- Pass mode toggle + quotable code ---- */
+    .seg { display: flex; background: var(--sky); border-radius: 999px; padding: 4px; gap: 4px; margin: 4px 0 16px; }
+    .seg-btn {
+      border: 0; background: transparent; color: var(--royal); font-weight: 800;
+      font-size: 0.8rem; padding: 8px 18px; border-radius: 999px;
+    }
+    .seg-btn.on { background: var(--royal); color: var(--white); }
+    .big-code {
+      font-family: var(--font-head); font-size: 2rem; letter-spacing: 0.06em;
+      color: var(--navy); line-height: 1.3; border: 2px dashed var(--royal);
+      border-radius: 16px; padding: 26px 20px; margin: 8px 0 4px; width: min(300px, 84vw);
+      background: var(--sky);
+    }
+    .big-code span { color: var(--royal); }
+
+    /* ---- Share sheet ---- */
+    .share-link {
+      background: var(--sky); border-radius: 10px; padding: 10px 14px; font-size: 0.8rem;
+      font-weight: 700; color: var(--royal); word-break: break-all; margin-bottom: 14px;
+    }
+    .share-row { display: flex; flex-direction: column; gap: 8px; }
+    .share-row .btn { width: 100%; }
+
     /* ---- Push banner + toast ---- */
     .push {
       position: absolute; top: 10px; left: 10px; right: 10px; z-index: 50;
@@ -279,7 +302,10 @@
               <div class="crest" aria-hidden="true"></div>
               <h1>Royals Family Pass<span>Reading FC Community Trust</span></h1>
             </div>
-            <button class="bell" id="bellBtn" aria-label="Notifications">🔔<span class="dot" id="bellDot">1</span></button>
+            <div style="display:flex;gap:8px;">
+              <button class="bell" id="shareBtn" aria-label="Share the app">📤</button>
+              <button class="bell" id="bellBtn" aria-label="Notifications">🔔<span class="dot" id="bellDot">1</span></button>
+            </div>
           </div>
           <div class="concept-tag"><strong>Concept prototype</strong> — demo only, not an official Reading FC product</div>
         </header>
@@ -327,7 +353,12 @@
               <p>The Royals Family Pass is a free app from Reading FC Community Trust, packed with free tickets and family offers across the Thames Valley. No subscriptions, no card details.</p>
             </div>
             <div class="info-card">
-              <h3>Limited QR drops</h3>
+              <h3>Share with another family</h3>
+              <p>Know a family who'd love free tickets and days out? Send them the app link by WhatsApp or text message.</p>
+              <button class="btn btn-gold btn-sm btn-block" id="shareBtn2" style="margin-top:10px;">📤 Share this app</button>
+            </div>
+            <div class="info-card">
+              <h3>Limited ticket drops</h3>
               <ol>
                 <li>Some offers have a fixed allocation — e.g. the first 100 families for Reading Rockets.</li>
                 <li>Tap <strong>Claim my QR ticket</strong> to secure yours. The live counter shows how many are left.</li>
@@ -336,11 +367,16 @@
             </div>
             <div class="info-card">
               <h3>At the venue</h3>
-              <p>Open <strong>My Tickets</strong>, show the QR code at the door, and staff scan or mark it as used. One scan per ticket — no printing needed.</p>
+              <p>Open <strong>My Tickets</strong> and either show the QR code for staff to scan, or switch to <strong>Quote code</strong> and read out your short ticket code — perfect for venues without a scanner. One redemption per ticket, no printing needed.</p>
             </div>
             <div class="info-card">
               <h3>For venues &amp; partners</h3>
               <p>Partners set their own allocation and validity dates. Redemptions are logged so the Trust can report exactly how many families each offer reached.</p>
+            </div>
+            <div class="info-card">
+              <h3>For the Trust team</h3>
+              <p>Offers, allocations and push alerts are managed in the Trust dashboard. New offers published there appear in this app straight away.</p>
+              <a class="btn btn-royal btn-sm btn-block" href="admin.html" target="_blank" rel="noopener" style="margin-top:10px;">🛠️ Open the management dashboard</a>
             </div>
             <div class="info-card">
               <p style="font-size:0.72rem;">Concept demonstration only — not affiliated with or endorsed by Reading Football Club. All offers, venues, counts and codes are placeholders. Demo data is stored only on this device.</p>
@@ -373,127 +409,26 @@
   </div>
   <p class="frame-note">Royals Family Pass — interactive concept prototype. Best experienced on a phone.</p>
 
+  <script src="assets/js/offers-data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
   <script>
   (() => {
     "use strict";
 
     /* ------------------------------------------------------------------ *
-     *  Offer catalogue (placeholder data — a real build serves this from
-     *  a backend so allocations are enforced server-side)
+     *  Offer catalogue — shared with the Trust admin dashboard
+     *  (assets/js/offers-data.js). Admin edits, new offers, pauses and
+     *  push alerts made in admin.html appear here automatically.
      * ------------------------------------------------------------------ */
-    const OFFERS = [
-      {
-        id: "kid-quid", icon: "🎟️", cat: "matchday",
-        title: "3× Kid for a Quid First Team Tickets",
-        venue: "Reading FC · Select Car Leasing Stadium",
-        price: "KIDS £1",
-        desc: "Three vouchers per family for selected first-team home matches — kids' tickets for just £1 each with a paying adult. Pick your matches when you book.",
-        terms: "Selected home league matches only. Max 3 kids' tickets per family per season. Subject to availability.",
-        cap: 500, seedClaimed: 391,
-        tags: "football match tickets first team select car leasing stadium royals quid"
-      },
-      {
-        id: "women", icon: "⚽", cat: "matchday",
-        title: "Free Entry — Reading FC Women Home Matches",
-        venue: "Reading FC Women · home fixtures",
-        price: "FREE",
-        desc: "Free family entry to every Reading FC Women home match this season. Show your pass at the turnstile — no booking needed for most fixtures.",
-        terms: "Home league fixtures. Cup matches may be excluded. Family = up to 2 adults + 3 children.",
-        cap: null,
-        tags: "football women womens ladies match free entry"
-      },
-      {
-        id: "u21", icon: "🧑‍🎓", cat: "matchday",
-        title: "Free Entry — Reading FC Under 21 Home Matches",
-        venue: "Reading FC U21 · home fixtures",
-        price: "FREE",
-        desc: "Watch the stars of tomorrow for free. Your pass admits the whole family to Under 21 home matches.",
-        terms: "Home fixtures only. Venue may vary — check fixture listings.",
-        cap: null,
-        tags: "football under 21 u21 academy youth development free entry"
-      },
-      {
-        id: "fans-forum", icon: "🎤", cat: "trust",
-        title: "Free Entry — Junior Fans Forum",
-        venue: "Select Car Leasing Stadium",
-        price: "FREE",
-        desc: "Your junior Royal puts their questions to players and club staff at the Junior Fans Forum. Limited seats — claim a QR ticket to guarantee entry.",
-        terms: "One QR ticket admits one child + one accompanying adult. Ages 6–14.",
-        cap: 60, seedClaimed: 41,
-        tags: "junior fans forum players questions event kids"
-      },
-      {
-        id: "rockets", icon: "🏀", cat: "daysout",
-        title: "Free Tickets — Reading Rockets Basketball",
-        venue: "Reading Rockets · Rivermead Leisure Complex",
-        price: "FREE",
-        desc: "Family ticket (2 adults + 2 children) to a Reading Rockets home game. Strictly the first 100 families to download a QR ticket.",
-        terms: "First 100 families only. One family ticket per household. Valid for selected home fixtures.",
-        cap: 100, seedClaimed: 63,
-        tags: "basketball rockets rivermead sport family ticket"
-      },
-      {
-        id: "bowling", icon: "🎳", cat: "daysout",
-        title: "Free Bowling for Four — Bowl Central",
-        venue: "Bowl Central",
-        price: "FREE",
-        desc: "One free game of bowling for up to four people, on the Trust. Shoes included. Perfect for a rainy-day family outing.",
-        terms: "One game per family. Off-peak sessions. Shoe hire included.",
-        cap: 100, seedClaimed: 76,
-        tags: "bowling bowl central tenpin family activity indoor"
-      },
-      {
-        id: "swim", icon: "🏊", cat: "daysout",
-        title: "Free Family Swim Session",
-        venue: "Participating Thames Valley leisure centres",
-        price: "FREE",
-        desc: "A free family swim session at participating leisure centres across the Thames Valley. Show your QR pass at reception.",
-        terms: "One session per family. Public family swim times only. Under-8s must be accompanied in the water.",
-        cap: 150, seedClaimed: 88,
-        tags: "swimming swim pool leisure centre family session water"
-      },
-      {
-        id: "beale", icon: "🦁", cat: "daysout",
-        title: "Kids Go Free — Beale Wildlife Park",
-        venue: "Beale Park, Lower Basildon",
-        price: "KIDS FREE",
-        desc: "Kids go free with a full-paying adult at Beale Wildlife Park — meerkats, lemurs, playgrounds and the little train, right on the Thames.",
-        terms: "Up to 3 free child entries per full-paying adult. Valid selected dates.",
-        cap: 200, seedClaimed: 117,
-        tags: "beale park wildlife zoo animals day out kids free basildon pangbourne"
-      },
-      {
-        id: "soccer-school", icon: "⚽", cat: "discount",
-        title: "10% Off Trust Soccer School Courses",
-        venue: "Trust venues across Berkshire",
-        price: "10% OFF",
-        desc: "10% off every Trust soccer school and holiday course booking. Your discount code sits in My Tickets — show it or enter it at checkout.",
-        terms: "Applies to Trust-run courses booked via ClassForKids. Not valid with other offers.",
-        cap: null,
-        tags: "soccer school holiday camp course coaching discount football"
-      },
-      {
-        id: "mascot", icon: "🦸", cat: "discount",
-        title: "10% Off Mascot Packages",
-        venue: "Reading FC matchday experiences",
-        price: "10% OFF",
-        desc: "Walk out with the team for less — 10% off matchday mascot packages for junior Royals.",
-        terms: "Subject to matchday availability. Ages 6–12.",
-        cap: null,
-        tags: "mascot matchday experience walk out kids discount"
-      },
-      {
-        id: "merch", icon: "👕", cat: "discount",
-        title: "10% Off Club Merchandise",
-        venue: "Club store & online",
-        price: "10% OFF",
-        desc: "10% off replica kits and club merchandise in-store — show your pass at the till.",
-        terms: "In-store and online with pass code. Excludes sale items and match tickets.",
-        cap: null,
-        tags: "merch merchandise shop kit shirt store discount"
-      }
-    ];
+    let ALL = [], OFFERS = [];
+    function refreshCatalog() {
+      const a = window.rfpLoadAdmin();
+      ALL = window.RFP_OFFERS
+        .map((o) => Object.assign({}, o, a.overrides[o.id] || {}))
+        .concat(a.customOffers);
+      OFFERS = ALL.filter((o) => !o.paused);
+      OFFERS.forEach((o) => { if (o.cap && S.counts[o.id] == null) S.counts[o.id] = o.seedClaimed || 0; });
+    }
 
     /* ------------------------------------------------------------------ *
      *  State (localStorage — demo only; real app enforces limits server-side)
@@ -511,11 +446,10 @@
     let S;
     try { S = Object.assign(defaultState(), JSON.parse(localStorage.getItem(KEY) || "{}")); }
     catch { S = defaultState(); }
-    OFFERS.forEach(o => { if (o.cap && S.counts[o.id] == null) S.counts[o.id] = o.seedClaimed; });
     const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
 
     const $ = (id) => document.getElementById(id);
-    const offerById = (id) => OFFERS.find(o => o.id === id);
+    const offerById = (id) => ALL.find(o => o.id === id);
     const remaining = (o) => o.cap ? Math.max(0, o.cap - (S.counts[o.id] || 0)) : null;
 
     /* ---- Desktop phone frame unless embedded or small screen ---- */
@@ -571,7 +505,7 @@
       const list = OFFERS.filter(o => {
         if (activeCat !== "all" && o.cat !== activeCat) return false;
         if (!query) return true;
-        return (o.title + " " + o.venue + " " + o.tags).toLowerCase().includes(query);
+        return (o.title + " " + o.venue + " " + (o.tags || "")).toLowerCase().includes(query);
       });
       const el = $("screen-offers");
       el.innerHTML = list.length
@@ -601,9 +535,9 @@
     function openSheet(id) {
       const o = offerById(id), left = remaining(o), mine = S.claimed[id];
       let action;
-      if (mine) action = `<button class="btn btn-royal btn-block" data-view="${id}">📲 Show my QR ticket</button>`;
+      if (mine) action = `<button class="btn btn-royal btn-block" data-view="${id}">📲 Show my ticket</button>`;
       else if (o.cap && left <= 0) action = `<button class="btn btn-block" disabled>Fully claimed — allocation gone</button>`;
-      else action = `<button class="btn btn-gold btn-block" data-claim="${id}">${o.cap ? "Claim my QR ticket" : "Add pass to My Tickets"}</button>`;
+      else action = `<button class="btn btn-gold btn-block" data-claim="${id}">${o.cap ? "Claim my ticket" : "Add pass to My Tickets"}</button>`;
 
       let meterHtml = "";
       if (o.cap && !mine) {
@@ -698,7 +632,12 @@
         <button class="close" aria-label="Close">✕</button>
         <h3>${o.icon} ${o.title}</h3>
         <div class="venue">📍 ${o.venue}</div>
+        <div class="seg">
+          <button class="seg-btn on" data-mode="qr">Scan QR</button>
+          <button class="seg-btn" data-mode="code">Quote code</button>
+        </div>
         <canvas class="pass-qr" width="256" height="256" aria-label="QR code"></canvas>
+        <div class="big-code" hidden>${t.code.split("-").join("<span>-</span><wbr>")}</div>
         <div class="pass-code">${t.code}</div>
         <div class="pass-status ${t.used ? "used" : ""}">${t.used ? "Redeemed — already used" : '<span class="live"></span>Valid · ready to scan'}</div>
         <p class="pass-hint">${t.used ? "This ticket has been scanned at the venue and can't be used again." : "Show this screen at the venue. Staff scan the code (or mark it used) — one scan per ticket."}</p>
@@ -707,6 +646,16 @@
       pv.classList.add("on");
       drawQR(pv.querySelector("canvas"), t.code);
       pv.querySelector(".close").addEventListener("click", () => pv.classList.remove("on"));
+      pv.querySelectorAll(".seg-btn").forEach((b) => b.addEventListener("click", () => {
+        pv.querySelectorAll(".seg-btn").forEach((x) => x.classList.toggle("on", x === b));
+        const codeMode = b.dataset.mode === "code";
+        pv.querySelector("canvas").style.display = codeMode ? "none" : "";
+        pv.querySelector(".big-code").hidden = !codeMode;
+        pv.querySelector(".pass-code").style.display = codeMode ? "none" : "";
+        if (!t.used) pv.querySelector(".pass-hint").textContent = codeMode
+          ? "No scanner needed — quote this code at the venue and staff mark it as used."
+          : "Show this screen at the venue. Staff scan the code (or mark it used) — one scan per ticket.";
+      }));
       const r = pv.querySelector("[data-redeem]");
       if (r) r.addEventListener("click", () => {
         t.used = true; save(); renderAll();
@@ -801,6 +750,36 @@
     document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => switchScreen(t.dataset.screen)));
     $("bellBtn").addEventListener("click", () => switchScreen("alerts"));
 
+    /* ---- Share the app (WhatsApp / text / copy) ---- */
+    const APP_LINK = (location.protocol.startsWith("http") && location.hostname !== "localhost" && location.hostname !== "127.0.0.1")
+      ? location.href.split(/[?#]/)[0]
+      : "https://boyd157.github.io/pitch-/app.html";
+    const SHARE_MSG = "Free tickets and family offers across the Thames Valley from Reading FC Community Trust \u{1F499} Get the Royals Family Pass app: " + APP_LINK;
+    function openShareSheet() {
+      $("sheet").innerHTML = `
+        <div class="grab"></div>
+        <div class="offer-icon">\u{1F4E4}</div>
+        <h3>Share the app</h3>
+        <p class="desc">Know a family who'd love free tickets and days out? Send them the Royals Family Pass link:</p>
+        <div class="share-link">${APP_LINK}</div>
+        ${navigator.share ? `<button class="btn btn-gold btn-block" data-share-native style="margin-bottom:10px;">\u{1F4E4} Share\u2026</button>` : ""}
+        <div class="share-row">
+          <a class="btn btn-royal btn-sm" href="https://wa.me/?text=${encodeURIComponent(SHARE_MSG)}" target="_blank" rel="noopener">Share on WhatsApp</a>
+          <a class="btn btn-royal btn-sm" href="sms:?&body=${encodeURIComponent(SHARE_MSG)}">Share by text message</a>
+          <button class="btn btn-ghost btn-sm" data-copy>Copy link</button>
+        </div>`;
+      $("sheet").classList.add("on"); $("sheetVeil").classList.add("on");
+      const n = $("sheet").querySelector("[data-share-native]");
+      if (n) n.addEventListener("click", () => navigator.share({ title: "Royals Family Pass", text: SHARE_MSG }).catch(() => {}));
+      $("sheet").querySelector("[data-copy]").addEventListener("click", () => {
+        (navigator.clipboard ? navigator.clipboard.writeText(APP_LINK) : Promise.reject())
+          .then(() => toast("\u2713 Link copied \u2014 paste it anywhere"))
+          .catch(() => toast(APP_LINK));
+      });
+    }
+    $("shareBtn").addEventListener("click", openShareSheet);
+    $("shareBtn2").addEventListener("click", openShareSheet);
+
     /* ---- Toast ---- */
     function toast(msg) {
       const t = $("toast");
@@ -818,7 +797,23 @@
      *  Liveness: welcome alert + Rockets drop + gently moving counters
      * ------------------------------------------------------------------ */
     function renderAll() { renderOffers(); renderTickets(); renderAlerts(); }
+
+    // Push alerts queued from the Trust dashboard (admin.html)
+    function drainPushQueue() {
+      const a = window.rfpLoadAdmin();
+      if (!a.pushQueue.length) return;
+      const q = a.pushQueue.splice(0);
+      window.rfpSaveAdmin(a);
+      q.forEach((msg, i) => setTimeout(() => pushAlert(msg), 900 + i * 1800));
+    }
+    // Live-sync with the dashboard when both are open on this device
+    window.addEventListener("storage", (e) => {
+      if (e.key === window.RFP_ADMIN_KEY) { refreshCatalog(); renderAll(); drainPushQueue(); }
+    });
+
+    refreshCatalog();
     renderAll();
+    drainPushQueue();
 
     if (!S.welcomed) {
       S.welcomed = true; save();
