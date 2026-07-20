@@ -247,6 +247,10 @@
           <input id="fCap" type="number" min="1" step="1" placeholder="e.g. 100" />
         </div>
         <div class="full">
+          <label for="fLink">Partner link (optional)</label>
+          <input id="fLink" type="url" placeholder="https:// — the partner's own landing page, shown on the offer" />
+        </div>
+        <div class="full">
           <label for="fDesc">Description shown to families</label>
           <textarea id="fDesc" placeholder="What is the offer, who is it for, and how do families use it?"></textarea>
         </div>
@@ -331,7 +335,7 @@
             : '<span class="status status-live">● Live</span>';
         return `
           <tr class="${o.paused ? "paused" : ""}">
-            <td><div class="offer-cell"><span class="offer-ico">${o.icon || "🎟️"}</span><div><div class="t">${o.title}</div><div class="v">${o.venue}</div></div></div></td>
+            <td><div class="offer-cell"><span class="offer-ico">${o.icon || "🎟️"}</span><div><div class="t">${o.title}</div><div class="v">${o.venue}${o.link ? ` \u00b7 <a href="${o.link}" target="_blank" rel="noopener" style="color:var(--royal);font-weight:700;text-decoration:none;">\u{1F517} partner page</a>` : ""}</div></div></div></td>
             <td><span class="tag">${CATS[o.cat] || o.cat || "—"}</span></td>
             <td><span class="tag tag-gold">${o.price || "FREE"}</span></td>
             <td>${o.cap ? `First ${o.cap.toLocaleString("en-GB")}` : "Unlimited"}</td>
@@ -400,6 +404,7 @@
       $("fCat").value = o ? (o.cat || "daysout") : "daysout";
       $("fPrice").value = o ? (o.price || "FREE") : "FREE";
       $("fCap").value = o && o.cap ? o.cap : "";
+      $("fLink").value = o ? (o.link || "") : "";
       $("fDesc").value = o ? (o.desc || "") : "";
       $("fTerms").value = o ? (o.terms || "") : "";
       $("fPush").checked = !o;
@@ -417,6 +422,7 @@
         cat: $("fCat").value,
         price: $("fPrice").value.trim() || "FREE",
         cap: $("fCap").value ? Math.max(1, parseInt($("fCap").value, 10)) : null,
+        link: $("fLink").value.trim() || null,
         desc: $("fDesc").value.trim() || "Details to follow — see the app for updates.",
         terms: $("fTerms").value.trim() || "Concept demo — placeholder terms."
       };

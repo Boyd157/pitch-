@@ -532,6 +532,13 @@
     /* ------------------------------------------------------------------ *
      *  Offer detail sheet + claiming
      * ------------------------------------------------------------------ */
+    function partnerLink(o) {
+      if (!o.link) return "";
+      let label = "the partner's website";
+      try { label = new URL(o.link).hostname.replace(/^www\./, ""); } catch {}
+      return `<a class="btn btn-ghost btn-block" href="${o.link}" target="_blank" rel="noopener" style="margin-top:10px;">\u{1F517} More at ${label}</a>`;
+    }
+
     function openSheet(id) {
       const o = offerById(id), left = remaining(o), mine = S.claimed[id];
       let action;
@@ -556,6 +563,7 @@
         ${meterHtml}
         <p class="desc">${o.desc}</p>
         ${action}
+        ${partnerLink(o)}
         <p class="terms"><strong>The small print:</strong> ${o.terms} Placeholder terms — concept demo only.</p>`;
       $("sheet").classList.add("on"); $("sheetVeil").classList.add("on");
       const c = $("sheet").querySelector("[data-claim]");
