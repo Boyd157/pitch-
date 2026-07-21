@@ -3,7 +3,6 @@ name: Deploy prototype to GitHub Pages
 on:
   push:
     branches:
-      - claude/wonderful-edison-4wminf
       - main
   workflow_dispatch:
 
